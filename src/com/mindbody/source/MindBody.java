@@ -9,84 +9,144 @@ import com.mindbodyonline.clients.api._0_5.SiteX0020Service;
 import com.mindbodyonline.clients.api._0_5.SiteX0020ServiceSoap;
 import com.mindbodyonline.clients.api._0_5.SourceCredentials;
 import com.mindbodyonline.clients.api._0_5.UserCredentials;
+import com.mindbodyonline.clients.api._0_5.XMLDetailLevel;
+import com.mindbodyonline.clients.api._0_5Class.ArrayOfString;
+import com.mindbodyonline.clients.api._0_5Class.ClassX0020Service;
+import com.mindbodyonline.clients.api._0_5Class.ClassX0020ServiceSoap;
+import com.mindbodyonline.clients.api._0_5Class.GetClassesRequest;
+import com.mindbodyonline.clients.api._0_5Class.GetClassesResult;
+import com.mindbodyonline.clients.api._0_5Class.GetEnrollmentsRequest;
+import com.mindbodyonline.clients.api._0_5Class.GetEnrollmentsResult;
+import com.mindbodyonline.clients.api._0_5Client.ClientX0020Service;
+import com.mindbodyonline.clients.api._0_5Client.ClientX0020ServiceSoap;
+import com.mindbodyonline.clients.api._0_5Client.GetClientsRequest;
+import com.mindbodyonline.clients.api._0_5Client.GetClientsResult;
+import com.mindbodyonline.clients.api._0_5Sale.GetSalesRequest;
+import com.mindbodyonline.clients.api._0_5Sale.GetSalesResult;
+import com.mindbodyonline.clients.api._0_5Sale.SaleX0020Service;
+import com.mindbodyonline.clients.api._0_5Sale.SaleX0020ServiceSoap;
+import com.mindbodyonline.clients.api._0_5Staff.GetStaffRequest;
+import com.mindbodyonline.clients.api._0_5Staff.GetStaffResult;
+import com.mindbodyonline.clients.api._0_5Staff.StaffX0020Service;
+import com.mindbodyonline.clients.api._0_5Staff.StaffX0020ServiceSoap;
 
 public class MindBody {
 
-	public static void main(String args[]) {
+	private String userId;
+	private String userPassword;
+	private ArrayOfInt sitesIds;
+	
+	private UserCredentials serviceUserCredentials;
+	private SourceCredentials serviceSourceCredentials; 
+	
+	public MindBody(String userId, String userPassword, int[] siteIdsArray) {
 		
-		System.out.println("Hello");
-		ArrayOfInt siteIds = new ArrayOfInt();
-		List<Integer> intList = siteIds.getInt();
-		intList.add(7335);
+		this.userId = userId;
+		this.userPassword = userPassword;
+		
+		this.sitesIds = new ArrayOfInt();
+		List<Integer> intList = this.sitesIds.getInt();
 
-
+		for (int i = 0; i < siteIdsArray.length; i++) {
+			intList.add(siteIdsArray[i]);
+		}
+		
 		UserCredentials userCredentials = new UserCredentials();
-		userCredentials.setUsername("andy@brndbot.com");
-		userCredentials.setPassword("258;Andover");
-//		userCredentials.setUsername("_BrndbotLLC");
-//		userCredentials.setPassword("WBQ2o/mat0gOfT1WeoXDKP1eH8Y=");
-		userCredentials.setSiteIDs(siteIds);
+		userCredentials.setUsername("_"+this.userId);
+		userCredentials.setPassword(this.userPassword);
+		userCredentials.setSiteIDs(this.sitesIds);
+		this.serviceUserCredentials = userCredentials;
 		
 		SourceCredentials sourceCredentials = new SourceCredentials();
-		sourceCredentials.setSourceName("BrndbotLLC");
-		sourceCredentials.setPassword("WBQ2o/mat0gOfT1WeoXDKP1eH8Y=");
-		sourceCredentials.setSiteIDs(siteIds);
-		
-		GetActivationCodeRequest activationCodeResult = new GetActivationCodeRequest();
-		activationCodeResult.setSourceCredentials(sourceCredentials);
-		
-		SiteX0020Service siteService = new SiteX0020Service();
-		SiteX0020ServiceSoap soap = siteService.getSiteX0020ServiceSoap();
-		
-		GetActivationCodeResult response = soap.getActivationCode(activationCodeResult);
-		System.out.println(response.getActivationLink());
-//		
-//		GetProgramsRequest programsRequest = new GetProgramsRequest();
-//		programsRequest.setUserCredentials(userCredentials);
-//		programsRequest.setSourceCredentials(sourceCredentials);
-//		programsRequest.setScheduleType(ScheduleType.ALL);
-//		
-//		GetProgramsResult programsResponse = soap.getPrograms(programsRequest);
-//		ArrayOfProgram arrayOfPrograms = programsResponse.getPrograms();
-//		for (Program program:arrayOfPrograms.getProgram()) {
-//			System.out.println(program.getName());
-//		}
-//		
-//		System.out.println(programsResponse.getPrograms());
-//		
-//		GetResourceScheduleRequest resourceScheduleRequest = new GetResourceScheduleRequest();
-//		GregorianCalendar c = new GregorianCalendar();
-//		c.setTime(new Date());
-//		XMLGregorianCalendar calendarDate = null;
-//		try {
-//			calendarDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-//		} catch (DatatypeConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}	
-//		resourceScheduleRequest.setDate(calendarDate);
-//		resourceScheduleRequest.setSourceCredentials(sourceCredentials);
-//		resourceScheduleRequest.setUserCredentials(userCredentials);
-//		
-//		GetResourceScheduleResult resourcesScheduleResponse = soap.getResourceSchedule(resourceScheduleRequest);
-//		System.out.println(resourcesScheduleResponse.toString());
-//		
-//		GetSessionTypesRequest sessionsTypeRequest = new GetSessionTypesRequest();
-//		sessionsTypeRequest.setSourceCredentials(sourceCredentials);
-//		sessionsTypeRequest.setUserCredentials(userCredentials);
-//		ArrayOfInt programIds = new ArrayOfInt();
-//		List<Integer> programIdsIntList = programIds.getInt();
-//		programIdsIntList.add(22);
-//		sessionsTypeRequest.setProgramIDs(programIds);
-//		
-//		GetSessionTypesResult sessionsTypeResult = soap.getSessionTypes(sessionsTypeRequest);
-//		sessionsTypeRequest.setOnlineOnly(true);
-//		ArrayOfSessionType arrayOfSessionType = sessionsTypeResult.getSessionTypes();
-//		System.out.println("Session Type:");
-//		for (SessionType session : arrayOfSessionType.getSessionType()) {
-//			System.out.println("Name:"+session.getName() +"defaultLength:"+session.getDefaultTimeLength() +"programId"+session.getProgramID());
-//		}
-		
+		sourceCredentials.setSourceName(this.userId);
+		sourceCredentials.setPassword(this.userPassword);
+		sourceCredentials.setSiteIDs(this.sitesIds);
+		this.serviceSourceCredentials = sourceCredentials;
 	}
+	
+	public GetActivationCodeResult getActivationCode(String userId, String userPassword, int[] siteIds) {
+		SiteX0020Service siteService = new SiteX0020Service();
+		SiteX0020ServiceSoap siteSoap = siteService.getSiteX0020ServiceSoap();
+		
+		GetActivationCodeRequest activationRequest = new GetActivationCodeRequest();
+		SourceCredentials sourceCredentials = new SourceCredentials();
+		sourceCredentials.setSourceName(userId);
+		sourceCredentials.setPassword(userPassword);
+		ArrayOfInt siteIdsArray = new ArrayOfInt();
+		List<Integer> intList = siteIdsArray.getInt();
 
+		for (int i = 0; i < siteIds.length; i++) {
+			intList.add(siteIds[i]);
+		}
+		
+		sourceCredentials.setSiteIDs(siteIdsArray);
+		activationRequest.setSourceCredentials(sourceCredentials);
+		GetActivationCodeResult activationResult = siteSoap.getActivationCode(activationRequest);
+		return activationResult;
+	}
+	
+	public GetClassesResult getClasses(GetClassesRequest classesRequest) {
+		classesRequest.setSourceCredentials(serviceSourceCredentials);
+		classesRequest.setUserCredentials(serviceUserCredentials);
+		classesRequest.setXMLDetail(XMLDetailLevel.FULL);
+
+		ClassX0020Service classService = new ClassX0020Service();
+		ClassX0020ServiceSoap classSoap = classService.getClassX0020ServiceSoap();
+		GetClassesResult classesResult = classSoap.getClasses(classesRequest);
+		return classesResult;
+	}
+	
+	public GetEnrollmentsResult getEnrollments(GetEnrollmentsRequest enrollmentsRequest) {
+		enrollmentsRequest.setSourceCredentials(serviceSourceCredentials);
+		enrollmentsRequest.setUserCredentials(serviceUserCredentials);
+		enrollmentsRequest.setXMLDetail(XMLDetailLevel.FULL);
+
+		ArrayOfString enrollmentFields = new ArrayOfString();
+		List<String> enrollmentFieldsList = enrollmentFields.getString();
+		enrollmentFieldsList.add("Enrollment.Classes");
+		enrollmentFieldsList.add("Enrollments.Classes.Resource");
+		enrollmentsRequest.setFields(enrollmentFields);
+
+		ClassX0020Service classService = new ClassX0020Service();
+		ClassX0020ServiceSoap classSoap = classService.getClassX0020ServiceSoap();
+
+		GetEnrollmentsResult enrollmentsResult = classSoap.getEnrollments(enrollmentsRequest);
+		return enrollmentsResult;
+	}
+	
+	public GetStaffResult getStaff(GetStaffRequest staffRequest) {
+		staffRequest.setSourceCredentials(serviceSourceCredentials);
+		staffRequest.setUserCredentials(serviceUserCredentials);
+		staffRequest.setXMLDetail(XMLDetailLevel.FULL);
+
+		StaffX0020Service staffService = new StaffX0020Service();
+		StaffX0020ServiceSoap staffSoap = staffService.getStaffX0020ServiceSoap();		
+		
+		GetStaffResult staffResult = staffSoap.getStaff(staffRequest);
+		return staffResult;
+	}
+	
+	public GetSalesResult getSales(GetSalesRequest salesRequest) {
+		salesRequest.setSourceCredentials(serviceSourceCredentials);
+		salesRequest.setUserCredentials(serviceUserCredentials);
+		salesRequest.setXMLDetail(XMLDetailLevel.FULL);
+
+		SaleX0020Service saleService = new SaleX0020Service();
+		SaleX0020ServiceSoap saleSoap = saleService.getSaleX0020ServiceSoap();
+		
+		GetSalesResult saleResult = saleSoap.getSales(salesRequest);
+		return saleResult;
+	}
+	
+	public GetClientsResult getClients(GetClientsRequest clientsRequest) {
+		clientsRequest.setSourceCredentials(serviceSourceCredentials);
+		clientsRequest.setUserCredentials(serviceUserCredentials);
+		clientsRequest.setXMLDetail(XMLDetailLevel.FULL);
+
+		ClientX0020Service clientService = new ClientX0020Service();
+		ClientX0020ServiceSoap clientSoap = clientService.getClientX0020ServiceSoap();
+		
+		GetClientsResult clientsResult = clientSoap.getClients(clientsRequest);
+		return clientsResult;
+	}
 }

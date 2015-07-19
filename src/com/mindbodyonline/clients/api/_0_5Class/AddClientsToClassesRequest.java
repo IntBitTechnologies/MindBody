@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
+
 
 /**
  * <p>Java class for AddClientsToClassesRequest complex type.

@@ -709,5 +709,4 @@ public class Class
     public void setStaff(Staff value) {
         this.staff = value;
     }
-
 }

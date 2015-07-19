@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
+
 
 /**
  * <p>Java class for GetClassesRequest complex type.

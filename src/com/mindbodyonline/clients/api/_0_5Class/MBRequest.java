@@ -8,6 +8,10 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import com.mindbodyonline.clients.api._0_5.SourceCredentials;
+import com.mindbodyonline.clients.api._0_5.UserCredentials;
+import com.mindbodyonline.clients.api._0_5.XMLDetailLevel;
+
 
 /**
  * <p>Java class for MBRequest complex type.
