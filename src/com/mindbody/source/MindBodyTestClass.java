@@ -41,8 +41,8 @@ import com.mindbodyonline.clients.api._0_5Staff.StaffX0020ServiceSoap;
 
 public class MindBodyTestClass {
 
-	private static String sourcePassword = "WBQ2o/mat0gOfT1WeoXDKP1eH8Y=";
-	private static String sourceName = "BrndbotLLC";
+	private static String sourcePassword = "";
+	private static String sourceName = "";
 	
 	public static void main(String[] args) {
 		
