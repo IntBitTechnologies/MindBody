@@ -64,7 +64,7 @@ public class MindBody {
 		this.serviceSourceCredentials = sourceCredentials;
 	}
 	
-	public GetActivationCodeResult getActivationCode(String userId, String userPassword, int[] siteIds) {
+	public static GetActivationCodeResult getActivationCode(String userId, String userPassword, int[] siteIds) {
 		SiteX0020Service siteService = new SiteX0020Service();
 		SiteX0020ServiceSoap siteSoap = siteService.getSiteX0020ServiceSoap();
 		
