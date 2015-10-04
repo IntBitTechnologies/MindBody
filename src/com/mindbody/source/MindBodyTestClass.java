@@ -248,13 +248,16 @@ public class MindBodyTestClass {
 		getSitesRequest.setUserCredentials(userCredentials);
 		
 		GetSitesResult sitesResult = siteSoap.getSites(getSitesRequest);
-		for (int i = 0; i < sitesResult.getSites().getSite().size(); i++) {
-			Site site = sitesResult.getSites().getSite().get(i);
-			if (intList.contains(site.getID())) {
-				System.out.println("Present:"+site.getID());		
-			}
-			
+		if (sitesResult.getSites() != null) {
+			for (int i = 0; i < sitesResult.getSites().getSite().size(); i++) {
+				Site site = sitesResult.getSites().getSite().get(i);
+				if (intList.contains(site.getID())) {
+					System.out.println("Present:"+site.getID());		
+				}
+				
+			}	
 		}
+		
 		
 		
 		
