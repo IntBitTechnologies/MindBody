@@ -3,6 +3,9 @@ package com.mindbody.source;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
 
 import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
 import com.mindbodyonline.clients.api._0_5.GetActivationCodeRequest;
@@ -22,6 +25,9 @@ import com.mindbodyonline.clients.api._0_5Class.GetClassesRequest;
 import com.mindbodyonline.clients.api._0_5Class.GetClassesResult;
 import com.mindbodyonline.clients.api._0_5Class.GetEnrollmentsRequest;
 import com.mindbodyonline.clients.api._0_5Class.GetEnrollmentsResult;
+import com.mindbodyonline.clients.api._0_5Client.AddOrUpdateClientsRequest;
+import com.mindbodyonline.clients.api._0_5Client.AddOrUpdateClientsResult;
+import com.mindbodyonline.clients.api._0_5Client.ArrayOfClient;
 import com.mindbodyonline.clients.api._0_5Client.Client;
 import com.mindbodyonline.clients.api._0_5Client.ClientIndex;
 import com.mindbodyonline.clients.api._0_5Client.ClientIndexValue;
@@ -31,6 +37,7 @@ import com.mindbodyonline.clients.api._0_5Client.GetClientIndexesRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientIndexesResult;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsResult;
+import com.mindbodyonline.clients.api._0_5Client.ObjectFactory;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesRequest;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesResult;
 import com.mindbodyonline.clients.api._0_5Sale.SaleX0020Service;
@@ -391,6 +398,88 @@ public class MindBody {
 		}
 
 		return currentMap;
+	}
+
+	public Map<String, String> searchEmailAndUpdateEmailOptIn(List<String> emailIds) {
+
+		Map<String, String> result = new HashMap<String, String>();
+
+		if (isActivated()) {
+
+			long startTime = System.currentTimeMillis();
+
+			ClientX0020Service clientService = new ClientX0020Service();
+			ClientX0020ServiceSoap clientSoap = clientService
+					.getClientX0020ServiceSoap();
+
+			GetClientsRequest clientsRequest = new GetClientsRequest();
+			clientsRequest.setSourceCredentials(serviceSourceCredentials);
+			clientsRequest.setUserCredentials(serviceUserCredentials);
+			clientsRequest.setXMLDetail(XMLDetailLevel.FULL);
+			clientsRequest.setPageSize(5000);
+			clientsRequest.setCurrentPageIndex(0);
+
+			ArrayOfClient arrayOfClient = new ArrayOfClient();
+
+			for (int i = 0; i < emailIds.size(); i++) {
+				if (emailIds.get(i) != null
+						&& MindBodyUtil.isValidEmail(emailIds.get(i))) {
+					clientsRequest.setSearchText(emailIds.get(i));
+					GetClientsResult clientsResult = clientSoap
+							.getClients(clientsRequest);
+					if (clientsResult != null
+							&& clientsResult.getClients() != null
+							&& clientsResult.getClients().getClient().size() > 0) {
+						arrayOfClient.getClient().addAll(
+								clientsResult.getClients().getClient());
+					}
+				}
+			}
+			result = updateMindbodyOptin(clientSoap, arrayOfClient);
+			long endTime = System.currentTimeMillis();
+			result.put("Total time of execution",
+					String.valueOf(endTime - startTime));
+		} else {
+			result.put("Mindbody not activated", "true");
+		}
+
+		return result;
+	}
+
+	private Map<String, String> updateMindbodyOptin(
+			ClientX0020ServiceSoap clientSoap, ArrayOfClient clientArray) {
+		AddOrUpdateClientsRequest addOrUpdateClientsRequest = new AddOrUpdateClientsRequest();
+		addOrUpdateClientsRequest.setUserCredentials(serviceUserCredentials);
+		addOrUpdateClientsRequest
+				.setSourceCredentials(serviceSourceCredentials);
+		addOrUpdateClientsRequest.setSendEmail(false);
+		addOrUpdateClientsRequest.setUpdateAction("Update");
+		addOrUpdateClientsRequest.setTest(false);
+		List<Client> clientList = clientArray.getClient();
+		List<Client> updatedClientList = new ArrayList<Client>();
+		ObjectFactory objectFactory = new ObjectFactory();
+		JAXBElement<Boolean> boolValue = objectFactory
+				.createClientEmailOptIn(false);
+
+		int i = 0;
+		if (clientList != null && clientList.size() > 0) {
+			for (Client client : clientList) {
+				++i;
+				client.setEmailOptIn(boolValue);
+				updatedClientList.add(client);
+			}
+			ArrayOfClient updatedClientArray = new ArrayOfClient();
+			updatedClientArray.getClient().addAll(updatedClientList);
+			addOrUpdateClientsRequest.setClients(updatedClientArray);
+			AddOrUpdateClientsResult addOrUpdateClientsResult = clientSoap
+					.addOrUpdateClients(addOrUpdateClientsRequest);
+			if (addOrUpdateClientsResult.getErrorCode() != 200) {
+				i = 0;
+			}
+		}
+		Map<String, String> result = new HashMap<String, String>();
+		result.put("Number of clients updated", String.valueOf(i));
+		return result;
 	}
 
 }
