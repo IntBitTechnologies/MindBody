@@ -192,7 +192,6 @@ public class PrototypeMindbodyDataDump {
 		GetClientsResult getClientsResult = clientSoap
 				.getClients(getClientsRequest);
 		int totalPageCount = getClientsResult.getTotalPageCount();
-		totalPageCount = 2;
 		for (int j = 0; j < totalPageCount; j++) {
 			List<Client> clientList = getClientsResult.getClients().getClient();
 			for (int i = 0; i < clientList.size(); i++) {
