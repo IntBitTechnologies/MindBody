@@ -1,5 +1,7 @@
 package com.mindbody.source;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
+import com.csvreader.CsvReader;
 import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
 import com.mindbodyonline.clients.api._0_5.GetActivationCodeRequest;
 import com.mindbodyonline.clients.api._0_5.GetActivationCodeResult;
@@ -83,11 +86,33 @@ public class MindBodyTestClass {
 
 	public static void main(String[] args) {
 		
-
-
 		ArrayOfInt siteIds = new ArrayOfInt();
 		List<Integer> intList = siteIds.getInt();
 		intList.add(7335);
+
+		int[] list = new  int[]{7335};
+		MindBody mindBody = new MindBody(sourceName, sourcePassword, list);
+		
+		List<String> emailIds = new ArrayList<String>();
+		try {
+//			CsvReader csvReader = new CsvReader("/Users/AR/Desktop/BrndBot/contact_export_061516_2153.csv");
+//			csvReader.readRecord();
+//			while (csvReader.readRecord()) {
+//				System.out.println(csvReader.get(0));
+//				emailIds.add(csvReader.get(0));
+//			}
+//			emailIds.add("andy.swansburg@gmail.com");
+//			Map<String, String> m = mindBody.searchEmailAndUpdateEmailOptIn(emailIds);
+//
+//			HashMap<String, List<Client>> map = mindBody.getEmailLists();
+//			List<Client> all = map.get("");
+//			for (int i = 0; i < all.size(); i++) {
+//				System.out.println(all.get(i).getFirstName() + ":"+all.get(i).getEmailOptIn());
+//			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		UserCredentials userCredentials = new UserCredentials();
 		userCredentials.setUsername("_BrndbotLLC");
