@@ -65,7 +65,7 @@ public class PrototypeMindbodyDataDump {
 			ClientX0020ServiceSoap clientSoap = clientService
 					.getClientX0020ServiceSoap();
 
-			List<Client> clients = getClients(clientSoap);
+			List<Client> clients = getClients(clientSoap, true);
 
 			getClientMemberships(clientSoap, clients);
 
@@ -176,7 +176,7 @@ public class PrototypeMindbodyDataDump {
 		// End Getting active memberships for a given client
 	}
 
-	private static List<Client> getClients(ClientX0020ServiceSoap clientSoap)
+	private static List<Client> getClients(ClientX0020ServiceSoap clientSoap, boolean shouldSaveinFireBase)
 			throws UnsupportedEncodingException, FirebaseException,
 			JacksonUtilityException {
 		// Getting active email opted in clients
@@ -203,25 +203,27 @@ public class PrototypeMindbodyDataDump {
 							|| (client.getInactive() != null && !client
 									.getInactive().getValue())) {
 						activeClients.add(client);
-						ObjectMapper m = new ObjectMapper();
-						Map<String, Object> map = m.convertValue(client,
-								Map.class);
-						firebaseController.save(Client.class.getName(), client.getID(),
-								map, new FirebaseCallBack() {
+						if (shouldSaveinFireBase) {
+							ObjectMapper m = new ObjectMapper();
+							Map<String, Object> map = m.convertValue(client,
+									Map.class);
+							firebaseController.save(Client.class.getName(), client.getID(),
+									map, new FirebaseCallBack() {
 
-									@Override
-									public void errorReceived(Integer arg0) {
-										// TODO Auto-generated method stub
+										@Override
+										public void errorReceived(Integer arg0) {
+											// TODO Auto-generated method stub
 
-									}
+										}
 
-									@Override
-									public void dataReceived(
-											Map<String, Object> arg0) {
-										// TODO Auto-generated method stub
+										@Override
+										public void dataReceived(
+												Map<String, Object> arg0) {
+											// TODO Auto-generated method stub
 
-									}
-								});
+										}
+									});
+						}
 					}
 				}
 			}
