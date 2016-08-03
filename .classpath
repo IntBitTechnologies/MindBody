@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="libs/javacsv.jar"/>
 	<classpathentry kind="lib" path="libs/intbit-firebase-1.0.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-core-2.7.1.jar"/>
+	<classpathentry kind="lib" path="/Users/AR/Documents/Projects/EclipseWorkspace/Mindbody/libs/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="/Users/AR/Documents/Projects/EclipseWorkspace/Mindbody/libs/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
