@@ -26,9 +26,6 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.util.JSONPObject;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.intbit.firebase.controller.FirebaseController;
 import com.intbit.firebase.error.FirebaseException;
 import com.intbit.firebase.error.JacksonUtilityException;

@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="ESA" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="TotalWOD" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="TaxInclusivePrices" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="SMSPackageEnabled" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="AllowsDashboardAccess" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="PricingLevel" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -60,7 +63,10 @@ import javax.xml.bind.annotation.XmlType;
     "contactEmail",
     "esa",
     "totalWOD",
-    "taxInclusivePrices"
+    "taxInclusivePrices",
+    "smsPackageEnabled",
+    "allowsDashboardAccess",
+    "pricingLevel"
 })
 public class Site {
 
@@ -96,6 +102,12 @@ public class Site {
     protected JAXBElement<Boolean> totalWOD;
     @XmlElementRef(name = "TaxInclusivePrices", namespace = "http://clients.mindbodyonline.com/api/0_5", type = JAXBElement.class, required = false)
     protected JAXBElement<Boolean> taxInclusivePrices;
+    @XmlElement(name = "SMSPackageEnabled")
+    protected Boolean smsPackageEnabled;
+    @XmlElement(name = "AllowsDashboardAccess")
+    protected Boolean allowsDashboardAccess;
+    @XmlElement(name = "PricingLevel")
+    protected String pricingLevel;
 
     /**
      * Gets the value of the id property.
@@ -471,6 +483,78 @@ public class Site {
      */
     public void setTaxInclusivePrices(JAXBElement<Boolean> value) {
         this.taxInclusivePrices = value;
+    }
+
+    /**
+     * Gets the value of the smsPackageEnabled property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isSMSPackageEnabled() {
+        return smsPackageEnabled;
+    }
+
+    /**
+     * Sets the value of the smsPackageEnabled property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setSMSPackageEnabled(Boolean value) {
+        this.smsPackageEnabled = value;
+    }
+
+    /**
+     * Gets the value of the allowsDashboardAccess property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isAllowsDashboardAccess() {
+        return allowsDashboardAccess;
+    }
+
+    /**
+     * Sets the value of the allowsDashboardAccess property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setAllowsDashboardAccess(Boolean value) {
+        this.allowsDashboardAccess = value;
+    }
+
+    /**
+     * Gets the value of the pricingLevel property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPricingLevel() {
+        return pricingLevel;
+    }
+
+    /**
+     * Sets the value of the pricingLevel property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPricingLevel(String value) {
+        this.pricingLevel = value;
     }
 
 }

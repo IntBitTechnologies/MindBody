@@ -65,12 +65,16 @@ import com.mindbodyonline.clients.api._0_5Client.GetClientPurchasesResult;
 import com.mindbodyonline.clients.api._0_5Client.GetClientServicesRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientServicesResult;
 import com.mindbodyonline.clients.api._0_5Client.GetClientVisitsRequest;
+import com.mindbodyonline.clients.api._0_5Client.GetClientVisitsResponse;
+import com.mindbodyonline.clients.api._0_5Client.GetClientVisitsResult;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsResult;
 import com.mindbodyonline.clients.api._0_5Client.ObjectFactory;
 import com.mindbodyonline.clients.api._0_5Client.Program;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesRequest;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesResult;
+import com.mindbodyonline.clients.api._0_5Sale.GetServicesRequest;
+import com.mindbodyonline.clients.api._0_5Sale.GetServicesResult;
 import com.mindbodyonline.clients.api._0_5Sale.SaleX0020Service;
 import com.mindbodyonline.clients.api._0_5Sale.SaleX0020ServiceSoap;
 import com.mindbodyonline.clients.api._0_5Staff.GetStaffRequest;
@@ -90,7 +94,7 @@ public class MindBodyTestClass {
 		List<Integer> intList = siteIds.getInt();
 		intList.add(7335);
 
-		int[] list = new  int[]{7335};
+		int[] list = new  int[]{99};
 		MindBody mindBody = new MindBody(sourceName, sourcePassword, list);
 		
 		List<String> emailIds = new ArrayList<String>();
@@ -126,22 +130,25 @@ public class MindBodyTestClass {
 
 		SiteX0020Service siteService = new SiteX0020Service();
 		SiteX0020ServiceSoap siteSoap = siteService.getSiteX0020ServiceSoap();
-//
+
 //		GetActivationCodeRequest activationRequest = new GetActivationCodeRequest();
 //		activationRequest.setSourceCredentials(sourceCredentials);
 //		GetActivationCodeResult activationResult = siteSoap
 //				.getActivationCode(activationRequest);
 //		System.out.println(activationResult.toString());
-//
-//		GetProgramsRequest programsRequest = new GetProgramsRequest();
-//		programsRequest.setSourceCredentials(sourceCredentials);
-//		programsRequest.setUserCredentials(userCredentials);
-//		programsRequest.setOnlineOnly(true);
-//		programsRequest.setScheduleType(ScheduleType.ALL);
-//
-//		GetProgramsResult programsResult = siteSoap
-//				.getPrograms(programsRequest);
-//		System.out.println(programsResult);
+		
+		
+		
+
+		GetProgramsRequest programsRequest = new GetProgramsRequest();
+		programsRequest.setSourceCredentials(sourceCredentials);
+		programsRequest.setUserCredentials(userCredentials);
+		programsRequest.setOnlineOnly(true);
+		programsRequest.setScheduleType(com.mindbodyonline.clients.api._0_5.ScheduleType.ALL);
+
+		GetProgramsResult programsResult = siteSoap
+				.getPrograms(programsRequest);
+		System.out.println(programsResult);
 
 		// 9999 invalid
 //		ClassX0020Service classService = new ClassX0020Service();
@@ -154,36 +161,36 @@ public class MindBodyTestClass {
 //		classesRequest.setXMLDetail(XMLDetailLevel.FULL);
 //		classesRequest.setCurrentPageIndex(0);
 //
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(new Date());
-//		// cal.add(Calendar.DATE, -1);
-//		cal.add(Calendar.DATE, -60);
-//		Date dateBefore30Days = cal.getTime();
-//
-//		GregorianCalendar startDate = new GregorianCalendar();
-//		startDate.setTime(dateBefore30Days);
-//		XMLGregorianCalendar calendarStartDate = null;
-//		try {
-//			calendarStartDate = DatatypeFactory.newInstance()
-//					.newXMLGregorianCalendar(startDate);
-//		} catch (DatatypeConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		// cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.DATE, -60);
+		Date dateBefore30Days = cal.getTime();
+
+		GregorianCalendar startDate = new GregorianCalendar();
+		startDate.setTime(dateBefore30Days);
+		XMLGregorianCalendar calendarStartDate = null;
+		try {
+			calendarStartDate = DatatypeFactory.newInstance()
+					.newXMLGregorianCalendar(startDate);
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //
 //		classesRequest.setStartDateTime(calendarStartDate);
 //
-//		GregorianCalendar nextTenDays = new GregorianCalendar();
-//		nextTenDays.add(Calendar.DATE, 0);
-//
-//		XMLGregorianCalendar calendarDateNextTenDays = null;
-//		try {
-//			calendarDateNextTenDays = DatatypeFactory.newInstance()
-//					.newXMLGregorianCalendar(nextTenDays);
-//		} catch (DatatypeConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		GregorianCalendar nextTenDays = new GregorianCalendar();
+		nextTenDays.add(Calendar.DATE, 0);
+
+		XMLGregorianCalendar calendarDateNextTenDays = null;
+		try {
+			calendarDateNextTenDays = DatatypeFactory.newInstance()
+					.newXMLGregorianCalendar(nextTenDays);
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //
 //		classesRequest.setEndDateTime(calendarDateNextTenDays);
 //		classesRequest.setHideCanceledClasses(false);
@@ -297,25 +304,23 @@ public class MindBodyTestClass {
 
 		SaleX0020Service saleService = new SaleX0020Service();
 		SaleX0020ServiceSoap saleSoap = saleService.getSaleX0020ServiceSoap();
-
-		GetSalesRequest salesRequest = new GetSalesRequest();
-//		salesRequest.setStartSaleDateTime(calendarStartDate);
-//		salesRequest.setEndSaleDateTime(calendarDateNextTenDays);
 		SourceCredentials saleSourceCredentials = new SourceCredentials();
 		saleSourceCredentials.setSourceName(sourceName);
 		saleSourceCredentials.setPassword(sourcePassword);
 		saleSourceCredentials.setSiteIDs(saleSiteIds);
-
 		UserCredentials saleUserCredentials = new UserCredentials();
 		saleUserCredentials.setUsername("_" + sourceName);
 		saleUserCredentials.setPassword(sourcePassword);
 		saleUserCredentials.setSiteIDs(saleSiteIds);
-
-		salesRequest.setSourceCredentials(saleSourceCredentials);
-		salesRequest.setUserCredentials(saleUserCredentials);
+		
+//		GetSalesRequest salesRequest = new GetSalesRequest();
 //		salesRequest.setStartSaleDateTime(calendarStartDate);
-//		salesRequest.setEndSaleDateTime(calendarDateNextTenDays);
+//		salesRequest.setEndSaleDateTime(calendarDateNextTenDays);		
+//		salesRequest.setSourceCredentials(saleSourceCredentials);
+//		salesRequest.setUserCredentials(saleUserCredentials);
 
+	
+		
 //		GetSalesResult saleResult = saleSoap.getSales(salesRequest);
 //		System.out.println(saleResult);
 		//
@@ -332,6 +337,24 @@ public class MindBodyTestClass {
 		// System.out.println(staffResult);
 		//
 		
+		GetServicesRequest servicesRequest = new GetServicesRequest();
+		servicesRequest.setSourceCredentials(saleSourceCredentials);
+		servicesRequest.setUserCredentials(saleUserCredentials);
+		servicesRequest.setCurrentPageIndex(0);
+		servicesRequest.setXMLDetail(XMLDetailLevel.FULL);
+		ArrayOfInt programArrayOfInt = new ArrayOfInt();
+		List<Integer> programIdsList = programArrayOfInt.getInt();
+		programIdsList.add(22);
+		programIdsList.add(23);
+		programIdsList.add(36);
+		programIdsList.add(41);
+//		programIdsList.add(22);
+		servicesRequest.setProgramIDs(programArrayOfInt);
+		
+//		GetServicesResult servicesResult = saleSoap.getServices(servicesRequest);
+//		System.out.println(servicesResult);
+
+		
 		long startTime = System.currentTimeMillis();
 		long serviceCallTime = 0;
 		long dataProcessingTime = 0;
@@ -341,6 +364,18 @@ public class MindBodyTestClass {
 		ClientX0020ServiceSoap clientSoap = clientService
 				.getClientX0020ServiceSoap();
 
+		GetClientVisitsRequest clientVisitsRequest = new GetClientVisitsRequest();
+		clientVisitsRequest.setCurrentPageIndex(0);
+		clientVisitsRequest.setPageSize(5000);
+		clientVisitsRequest.setSourceCredentials(saleSourceCredentials);
+		clientVisitsRequest.setUserCredentials(userCredentials);
+		clientVisitsRequest.setXMLDetail(XMLDetailLevel.FULL);
+		clientVisitsRequest.setClientID("100005248");
+		
+		GetClientVisitsResult clientVisitsResult = clientSoap.getClientVisits(clientVisitsRequest);
+		System.out.println(clientVisitsResult);
+		
+		
 		GetClientIndexesRequest clientIndexesRequest = new GetClientIndexesRequest();
 		clientIndexesRequest.setSourceCredentials(saleSourceCredentials);
 		clientIndexesRequest.setUserCredentials(saleUserCredentials);
@@ -385,6 +420,8 @@ public class MindBodyTestClass {
 		endTime = System.currentTimeMillis();
 		dataProcessingTime = dataProcessingTime + (endTime - dataProcessingStartTime);
 		*/
+		
+		/*
 		GetClientsRequest clientsRequest = new GetClientsRequest();
 		clientsRequest.setSourceCredentials(saleSourceCredentials);
 		clientsRequest.setUserCredentials(saleUserCredentials);
@@ -415,29 +452,29 @@ public class MindBodyTestClass {
 		endTime = System.currentTimeMillis();
 		serviceCallTime = serviceCallTime + (endTime - serviceCallStartTime);
 		updateMindbodyOptin(clientSoap, arrayOfClient,saleSourceCredentials,saleUserCredentials);
-		
+		*/
 		//clientIndexesHashmap = processEmailOptin(clientIndexesHashmap, clientsResult);
 		
 		endTime = System.currentTimeMillis();
 
 		
-		/*int pageCount = clientsResult.getTotalPageCount();
-		
-		for (int currentPage = 1; currentPage < pageCount; currentPage++) {
-			clientsRequest.setCurrentPageIndex(currentPage);
-			serviceCallStartTime = System.currentTimeMillis();
-			System.out.println("Getting details for page:"+currentPage);
-			clientsResult = clientSoap.getClients(clientsRequest);
-			
-			endTime = System.currentTimeMillis();
-			serviceCallTime = serviceCallTime + (endTime - serviceCallStartTime);
-
-			dataProcessingStartTime = System.currentTimeMillis();
-			clientIndexesHashmap = processEmailOptin(clientIndexesHashmap, clientsResult);
-			endTime = System.currentTimeMillis();
-			dataProcessingTime = dataProcessingTime + (endTime - dataProcessingStartTime);
-
-		}
+//		int pageCount = clientsResult.getTotalPageCount();
+//		
+//		for (int currentPage = 1; currentPage < pageCount; currentPage++) {
+//			clientsRequest.setCurrentPageIndex(currentPage);
+//			serviceCallStartTime = System.currentTimeMillis();
+//			System.out.println("Getting details for page:"+currentPage);
+//			clientsResult = clientSoap.getClients(clientsRequest);
+//			
+//			endTime = System.currentTimeMillis();
+//			serviceCallTime = serviceCallTime + (endTime - serviceCallStartTime);
+//
+//			dataProcessingStartTime = System.currentTimeMillis();
+//			clientIndexesHashmap = processEmailOptin(clientIndexesHashmap, clientsResult);
+//			endTime = System.currentTimeMillis();
+//			dataProcessingTime = dataProcessingTime + (endTime - dataProcessingStartTime);
+//
+//		}
 		
 		endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -483,7 +520,7 @@ public class MindBodyTestClass {
 		GetClientServicesResult clientServicesResult = clientSoap
 				.getClientServices(clientServicesRequest);
 		System.out.println(clientServicesResult);
-*/
+
 		/*GetClientPurchasesRequest clientPurchasesRequest = new GetClientPurchasesRequest();
 		clientPurchasesRequest.setSourceCredentials(saleSourceCredentials);
 		clientPurchasesRequest.setUserCredentials(saleUserCredentials);

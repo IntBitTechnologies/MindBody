@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="Username" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="Password" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="SiteIDs" type="{http://clients.mindbodyonline.com/api/0_5}ArrayOfInt" minOccurs="0"/>
+ *         &lt;element name="LocationID" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,7 +33,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "UserCredentials", propOrder = {
     "username",
     "password",
-    "siteIDs"
+    "siteIDs",
+    "locationID"
 })
 public class UserCredentials {
 
@@ -42,6 +44,8 @@ public class UserCredentials {
     protected String password;
     @XmlElement(name = "SiteIDs")
     protected ArrayOfInt siteIDs;
+    @XmlElement(name = "LocationID", required = true, type = Integer.class, nillable = true)
+    protected Integer locationID;
 
     /**
      * Gets the value of the username property.
@@ -113,6 +117,30 @@ public class UserCredentials {
      */
     public void setSiteIDs(ArrayOfInt value) {
         this.siteIDs = value;
+    }
+
+    /**
+     * Gets the value of the locationID property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Integer }
+     *     
+     */
+    public Integer getLocationID() {
+        return locationID;
+    }
+
+    /**
+     * Sets the value of the locationID property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
+     *     
+     */
+    public void setLocationID(Integer value) {
+        this.locationID = value;
     }
 
 }

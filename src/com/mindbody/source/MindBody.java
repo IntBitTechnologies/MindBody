@@ -1,17 +1,27 @@
 package com.mindbody.source;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
+import com.mindbodyonline.clients.api._0_5.ArrayOfFunctionParam;
 import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
+import com.mindbodyonline.clients.api._0_5.FunctionDataXmlRequest;
+import com.mindbodyonline.clients.api._0_5.FunctionParam;
 import com.mindbodyonline.clients.api._0_5.GetActivationCodeRequest;
 import com.mindbodyonline.clients.api._0_5.GetActivationCodeResult;
+import com.mindbodyonline.clients.api._0_5.GetLocationsRequest;
+import com.mindbodyonline.clients.api._0_5.GetLocationsResult;
+import com.mindbodyonline.clients.api._0_5.GetProgramsRequest;
+import com.mindbodyonline.clients.api._0_5.GetProgramsResult;
 import com.mindbodyonline.clients.api._0_5.GetSitesRequest;
 import com.mindbodyonline.clients.api._0_5.GetSitesResult;
+import com.mindbodyonline.clients.api._0_5.SelectDataCSVResult;
 import com.mindbodyonline.clients.api._0_5.Site;
 import com.mindbodyonline.clients.api._0_5.SiteX0020Service;
 import com.mindbodyonline.clients.api._0_5.SiteX0020ServiceSoap;
@@ -35,11 +45,15 @@ import com.mindbodyonline.clients.api._0_5Client.ClientX0020Service;
 import com.mindbodyonline.clients.api._0_5Client.ClientX0020ServiceSoap;
 import com.mindbodyonline.clients.api._0_5Client.GetClientIndexesRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientIndexesResult;
+import com.mindbodyonline.clients.api._0_5Client.GetClientVisitsRequest;
+import com.mindbodyonline.clients.api._0_5Client.GetClientVisitsResult;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsRequest;
 import com.mindbodyonline.clients.api._0_5Client.GetClientsResult;
 import com.mindbodyonline.clients.api._0_5Client.ObjectFactory;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesRequest;
 import com.mindbodyonline.clients.api._0_5Sale.GetSalesResult;
+import com.mindbodyonline.clients.api._0_5Sale.GetServicesRequest;
+import com.mindbodyonline.clients.api._0_5Sale.GetServicesResult;
 import com.mindbodyonline.clients.api._0_5Sale.SaleX0020Service;
 import com.mindbodyonline.clients.api._0_5Sale.SaleX0020ServiceSoap;
 import com.mindbodyonline.clients.api._0_5Staff.GetStaffRequest;
@@ -347,7 +361,7 @@ public class MindBody {
 			}
 
 			endTime = System.currentTimeMillis();
-			long totalTime = endTime - startTime;
+//			long totalTime = endTime - startTime;
 			// System.out.println("Data Processing time:"+dataProcessingTime /
 			// 1000.0+" seconds");
 			// System.out.println("Service Call Execution time:"+serviceCallTime
@@ -400,7 +414,8 @@ public class MindBody {
 		return currentMap;
 	}
 
-	public Map<String, String> searchEmailAndUpdateEmailOptIn(List<String> emailIds) {
+	public Map<String, String> searchEmailAndUpdateEmailOptIn(
+			List<String> emailIds) {
 
 		Map<String, String> result = new HashMap<String, String>();
 
@@ -482,4 +497,267 @@ public class MindBody {
 		return result;
 	}
 
+	public SalesDetailResponse getSalesDetail(SalesDetailRequest salesDetailRequest) throws IOException {
+		if (isActivated()) {
+			FunctionDataXmlRequest functionDataXmlRequest = MindBodyUtil
+					.generalFunctionalRequest("BrndBot_GetSalesDetail",
+							serviceUserCredentials, serviceSourceCredentials);
+			functionDataXmlRequest = getSalesDetail(functionDataXmlRequest,
+					salesDetailRequest);
+			SelectDataCSVResult selectDataCSVResult = MindBodyUtil.executeFunctionRequest(functionDataXmlRequest);
+			SalesDetailResponse salesDetailResponse = SalesDetailResponse.parse(selectDataCSVResult);
+			return salesDetailResponse;
+		}
+		return null;
+	}
+
+	public RevenueCategoryResponse getRevenueCategories(
+			MindBodyRevenueType revenueType) throws IOException {
+		if (isActivated()) {
+			FunctionDataXmlRequest functionDataXmlRequest = MindBodyUtil
+					.generalFunctionalRequest("BrndBot_GetRevenueCategories",
+							serviceUserCredentials, serviceSourceCredentials);
+			functionDataXmlRequest = getRevenueCategories(
+					functionDataXmlRequest, revenueType);
+			SelectDataCSVResult selectDataCSVResult = MindBodyUtil.executeFunctionRequest(functionDataXmlRequest);
+			RevenueCategoryResponse revenueCategoryResponse = RevenueCategoryResponse.parse(selectDataCSVResult);
+			return revenueCategoryResponse;
+		}
+		return null;
+	}
+
+	public NoReturnDetailResponse getNoReturnDetail(NoReturnDetailRequest noReturnDetailRequest) throws IOException {
+		if (isActivated()) {
+			FunctionDataXmlRequest functionDataXmlRequest = MindBodyUtil
+					.generalFunctionalRequest("Brndbot_NoReturnDetail",
+							serviceUserCredentials, serviceSourceCredentials);
+			functionDataXmlRequest = getNoReturnDetail(functionDataXmlRequest,
+					noReturnDetailRequest);
+			SelectDataCSVResult selectDataCSVResult = MindBodyUtil.executeFunctionRequest(functionDataXmlRequest);
+			NoReturnDetailResponse response = NoReturnDetailResponse.parse(selectDataCSVResult);
+			return response;
+
+		}
+		return null;
+	}
+
+	private FunctionDataXmlRequest getRevenueCategories(
+			FunctionDataXmlRequest functionDataXmlRequest,
+			MindBodyRevenueType revenueType) {
+		ArrayOfFunctionParam arrayOfFunctionParam = new ArrayOfFunctionParam();
+		List<FunctionParam> functionParams = arrayOfFunctionParam
+				.getFunctionParam();
+		FunctionParam functionParam = new FunctionParam();
+
+		functionParam.setParamDataType("string");
+		if (revenueType == null) {
+			revenueType = MindBodyRevenueType.Service;
+		}
+		functionParam.setParamValue(revenueType.getValue());
+		functionParam.setParamName("@revenuetype");
+
+		functionParams.add(functionParam);
+
+		functionDataXmlRequest.setFunctionParams(arrayOfFunctionParam);
+		return functionDataXmlRequest;
+	}
+
+	private FunctionDataXmlRequest getSalesDetail(
+			FunctionDataXmlRequest functionDataXmlRequest,
+			SalesDetailRequest salesDetailRequest) {
+
+		ArrayOfFunctionParam arrayOfFunctionParam = new ArrayOfFunctionParam();
+		List<FunctionParam> functionParams = arrayOfFunctionParam
+				.getFunctionParam();
+
+		FunctionParam functionParam = new FunctionParam();
+		if (!MindBodyUtil.isEmpty(salesDetailRequest.getStartDate())) {
+			functionParam.setParamDataType("Date");
+			functionParam.setParamValue(salesDetailRequest.getStartDate());
+			functionParam.setParamName("@startdate");
+			functionParams.add(functionParam);
+		}
+
+		if (!MindBodyUtil.isEmpty(salesDetailRequest.getEndDate())) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("Date");
+			functionParam.setParamValue(salesDetailRequest.getEndDate());
+			functionParam.setParamName("@enddate");
+			functionParams.add(functionParam);
+		}
+
+		if (salesDetailRequest.getServiceCategoryId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(salesDetailRequest
+					.getServiceCategoryId()));
+			functionParam.setParamName("@servicecategoryID");
+			functionParams.add(functionParam);
+		}
+
+		if (salesDetailRequest.getRevenueCategoryId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(salesDetailRequest
+					.getRevenueCategoryId()));
+			functionParam.setParamName("@revenuecategoryID");
+			functionParams.add(functionParam);
+		}
+
+		if (salesDetailRequest.getPricingOptionId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(salesDetailRequest
+					.getPricingOptionId()));
+			functionParam.setParamName("@pricingoptionID");
+			functionParams.add(functionParam);
+		}
+
+		if (salesDetailRequest.getLocationId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(salesDetailRequest
+					.getLocationId()));
+			functionParam.setParamName("@locationID");
+			functionParams.add(functionParam);
+		}
+
+		if (functionParams != null && functionParams.size() > 0) {
+			functionDataXmlRequest.setFunctionParams(arrayOfFunctionParam);
+		}
+
+		return functionDataXmlRequest;
+	}
+
+	private FunctionDataXmlRequest getNoReturnDetail(
+			FunctionDataXmlRequest functionDataXmlRequest,
+			NoReturnDetailRequest noReturnDetailRequest) {
+		ArrayOfFunctionParam arrayOfFunctionParam = new ArrayOfFunctionParam();
+		List<FunctionParam> functionParams = arrayOfFunctionParam
+				.getFunctionParam();
+
+		FunctionParam functionParam = new FunctionParam();
+		if (!MindBodyUtil.isEmpty(noReturnDetailRequest.getStartDate())) {
+			functionParam.setParamDataType("datetime");
+			functionParam.setParamValue(noReturnDetailRequest.getStartDate());
+			functionParam.setParamName("@startdate");
+			functionParams.add(functionParam);
+		}
+
+		if (!MindBodyUtil.isEmpty(noReturnDetailRequest.getEndDate())) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("datetime");
+			functionParam.setParamValue(noReturnDetailRequest.getEndDate());
+			functionParam.setParamName("@enddate");
+			functionParams.add(functionParam);
+		}
+
+		if (noReturnDetailRequest.getPricingOptionId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(noReturnDetailRequest
+					.getPricingOptionId()));
+			functionParam.setParamName("@pricingoptionID");
+			functionParams.add(functionParam);
+		}
+
+		if (noReturnDetailRequest.getLocationId() != null) {
+			functionParam = new FunctionParam();
+			functionParam.setParamDataType("int");
+			functionParam.setParamValue(String.valueOf(noReturnDetailRequest
+					.getLocationId()));
+			functionParam.setParamName("@locationID");
+			functionParams.add(functionParam);
+		}
+
+		if (functionParams != null && functionParams.size() > 0) {
+			functionDataXmlRequest.setFunctionParams(arrayOfFunctionParam);
+		}
+
+		return functionDataXmlRequest;
+	}
+
+	public GetServicesResult getPricingOptions(List<Integer> programIds) {
+		if (isActivated()) {
+
+			GetServicesRequest servicesRequest = new GetServicesRequest();
+			servicesRequest.setSourceCredentials(serviceSourceCredentials);
+			servicesRequest.setUserCredentials(serviceUserCredentials);
+			servicesRequest.setCurrentPageIndex(0);
+			servicesRequest.setXMLDetail(XMLDetailLevel.FULL);
+			ArrayOfInt programArrayOfInt = new ArrayOfInt();
+			List<Integer> programIdsList = programArrayOfInt.getInt();
+			if (programIds != null && programIds.size() > 0) {
+				for (Iterator<Integer> iterator = programIds.iterator(); iterator
+						.hasNext();) {
+					Integer id = (Integer) iterator.next();
+					programIdsList.add(id);
+				}
+				servicesRequest.setProgramIDs(programArrayOfInt);
+			}
+
+			SaleX0020Service saleService = new SaleX0020Service();
+			SaleX0020ServiceSoap saleSoap = saleService
+					.getSaleX0020ServiceSoap();
+			GetServicesResult servicesResult = saleSoap
+					.getServices(servicesRequest);
+			return servicesResult;
+		}
+		return null;
+	}
+
+	public GetProgramsResult getServiceCategories(
+			com.mindbodyonline.clients.api._0_5.ScheduleType scheduleType,
+			Boolean onlineOnly) {
+		if (isActivated()) {
+
+			GetProgramsRequest programsRequest = new GetProgramsRequest();
+			programsRequest.setSourceCredentials(serviceSourceCredentials);
+			programsRequest.setUserCredentials(serviceUserCredentials);
+			if (onlineOnly == null) {
+				onlineOnly = false;
+			}
+			programsRequest.setOnlineOnly(onlineOnly);
+			programsRequest.setScheduleType(scheduleType);
+			SiteX0020Service siteService = new SiteX0020Service();
+			SiteX0020ServiceSoap siteSoap = siteService
+					.getSiteX0020ServiceSoap();
+			GetProgramsResult programsResult = siteSoap
+					.getPrograms(programsRequest);
+			return programsResult;
+		}
+
+		return null;
+	}
+	
+	public GetLocationsResult getLocations(){
+		if (isActivated()) {
+			GetLocationsRequest locationsRequest = new GetLocationsRequest();
+			locationsRequest.setSourceCredentials(serviceSourceCredentials);
+			locationsRequest.setUserCredentials(serviceUserCredentials);
+			SiteX0020Service siteService = new SiteX0020Service();
+			SiteX0020ServiceSoap siteSoap = siteService
+					.getSiteX0020ServiceSoap();
+			GetLocationsResult locationsResult = siteSoap
+					.getLocations(locationsRequest);
+			return locationsResult;
+		}
+
+		return null;
+	}
+	
+	public GetClientVisitsResult getClientVisits(GetClientVisitsRequest clientVisitsRequest){
+		if (isActivated()) {
+			clientVisitsRequest.setSourceCredentials(serviceSourceCredentials);
+			clientVisitsRequest.setUserCredentials(serviceUserCredentials);
+			ClientX0020Service clientService = new ClientX0020Service();
+			ClientX0020ServiceSoap clientSoap = clientService
+					.getClientX0020ServiceSoap();
+			GetClientVisitsResult clientVisitsResult = clientSoap
+					.getClientVisits(clientVisitsRequest);
+			return clientVisitsResult;
+		}
+
+		return null;
+	}
 }
