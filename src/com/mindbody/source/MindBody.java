@@ -61,6 +61,8 @@ import com.mindbodyonline.clients.api._0_5Staff.GetStaffResult;
 import com.mindbodyonline.clients.api._0_5Staff.StaffX0020Service;
 import com.mindbodyonline.clients.api._0_5Staff.StaffX0020ServiceSoap;
 
+//When creating Jar file. Choose Runnable Jar and Choose MindBodyTest - Utility as the main file. 
+//And make sure the project where this is used has all the jars. This is not a far JAR. FYI
 public class MindBody {
 
 	private String userId;
