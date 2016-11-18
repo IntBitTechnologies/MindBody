@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.csvreader.CsvReader;
 
-public class NoReturnDetail {
+public class NoReturnDetail extends BaseDetail{
 	private String clientID;
 	private Long locationID;
 	private String lastName;
@@ -125,16 +125,20 @@ public class NoReturnDetail {
 	}
 
 
-	public static NoReturnDetail parse(CsvReader csvReader) throws NumberFormatException, IOException {
+	public static NoReturnDetail parse(CsvReader csvReader) throws IOException {
 		NoReturnDetail noReturnDetail = new NoReturnDetail();
-		noReturnDetail.clientID = csvReader.get(0);
-		noReturnDetail.locationID = Long.parseLong(csvReader.get(1));
-		noReturnDetail.lastName = csvReader.get(2);
-		noReturnDetail.firstName = csvReader.get(3);
-		noReturnDetail.email = csvReader.get(4);
-		noReturnDetail.lastVisit = csvReader.get(5);
-		noReturnDetail.pricingOptionID = Long.parseLong(csvReader.get(6));
+		noReturnDetail.clientID = noReturnDetail.safeString(csvReader.get(0));
+		noReturnDetail.locationID = noReturnDetail.safeLong(csvReader.get(1));
+		noReturnDetail.lastName = noReturnDetail.safeString(csvReader.get(2));
+		noReturnDetail.firstName = noReturnDetail.safeString(csvReader.get(3));
+		noReturnDetail.email = noReturnDetail.safeString(csvReader.get(4));
+		noReturnDetail.lastVisit = noReturnDetail.safeString(csvReader.get(5));
+		noReturnDetail.pricingOptionID = noReturnDetail.safeLong(csvReader.get(6));
 		return noReturnDetail;
 	}
 
+
+	
+
+	
 }

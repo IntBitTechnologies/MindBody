@@ -14,11 +14,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.csvreader.CsvReader;
 import com.mindbodyonline.clients.api._0_5.ArrayOfInt;
@@ -93,32 +98,36 @@ public class MindBodyTestClass2 {
 		int[] list = new  int[]{-99};
 		MindBody mindBody = new MindBody(sourceName, sourcePassword, list);
 		try {
-//			RevenueCategoryResponse revenueCategoryResponse = mindBody.getRevenueCategories(MindBodyRevenueType.Service);
+//			RevenueCategoryResponse revenueCategoryResponse = mindBody.getRevenueCategories(MindBodyRevenueType.Product);
 //			for (int i = 0; i < revenueCategoryResponse.getRows().size(); i++) {
-//				System.out.println(revenueCategoryResponse.getRows().get(i).toString());	
+//				RevenueCategory revenueCategory = (RevenueCategory) revenueCategoryResponse.getRows().get(i);
+//				System.out.println(revenueCategory.getCategoryId());	
 //			}
 			
 			NoReturnDetailRequest noReturnDetailRequest = new NoReturnDetailRequest();
-//			noReturnDetailRequest.setLocationId(1);
+			noReturnDetailRequest.setLocationId(1);
 			noReturnDetailRequest.setPricingOptionId(1198);
 			noReturnDetailRequest.setStartDate("2016-10-01");
 			noReturnDetailRequest.setEndDate("2016-10-31");
-//			
+			
 			NoReturnDetailResponse noReturnDetailResponse = mindBody.getNoReturnDetail(noReturnDetailRequest);
 			for (int i = 0; i < noReturnDetailResponse.getRows().size(); i++) {
 				System.out.println(noReturnDetailResponse.getRows().get(i));
 			}
 			
-//			SalesDetailRequest salesDetailRequest = new SalesDetailRequest();
-//			salesDetailRequest.setStartDate("2016-10-01");
-//			salesDetailRequest.setEndDate("2016-10-31");
+			SalesDetailRequest salesDetailRequest = new SalesDetailRequest();
+			salesDetailRequest.setStartDate("2016-10-01");
+			salesDetailRequest.setEndDate("2016-10-31");
 //			salesDetailRequest.setServiceCategoryId(42);
 //			salesDetailRequest.setRevenueCategoryId(-3);
 //			salesDetailRequest.setPricingOptionId(10265);
 //			salesDetailRequest.setLocationId(1);
 //			SalesDetailResponse salesDetailResponse = mindBody.getSalesDetail(salesDetailRequest);
 //			for (int i = 0; i < salesDetailResponse.getRows().size(); i++) {
-//				System.out.println(salesDetailResponse.getRows().get(i));
+//				SalesDetail salesDetail = (SalesDetail) salesDetailResponse.getRows().get(i);
+//				String escaped = isValidEmailAddress(salesDetail.getEmail()) ? "Valid" : "Invalid";
+//				
+//				System.out.println(salesDetail.getEmail() + " " +escaped);
 //			}
 			
 			
@@ -127,9 +136,18 @@ public class MindBodyTestClass2 {
 			e.printStackTrace();
 		}
 		
-		
-		
 	}
+	
+	public static boolean isValidEmailAddress(String email) {
+		   boolean result = true;
+		   try {
+		      InternetAddress emailAddr = new InternetAddress(email);
+		      emailAddr.validate();
+		   } catch (AddressException ex) {
+		      result = false;
+		   }
+		   return result;
+		}
 
 	public static Date toDate(XMLGregorianCalendar calendar) {
 		if (calendar == null) {

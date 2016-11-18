@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.csvreader.CsvReader;
 
-public class RevenueCategory {
+public class RevenueCategory extends BaseDetail{
 
 	private String categoryName;
 	private Long categoryId;
@@ -47,9 +47,9 @@ public class RevenueCategory {
 	}
 	public static RevenueCategory parse(CsvReader csvReader) throws IOException {
 		RevenueCategory revenueCategory = new RevenueCategory();
-		revenueCategory.categoryName = csvReader.get(0);
-		revenueCategory.categoryId = Long.parseLong(csvReader.get(1));
-		revenueCategory.categoryType = csvReader.get(2);
+		revenueCategory.categoryName = revenueCategory.safeString(csvReader.get(0));
+		revenueCategory.categoryId = revenueCategory.safeLong(csvReader.get(1));
+		revenueCategory.categoryType = revenueCategory.safeString(csvReader.get(2));
 		return revenueCategory;
 	}
 

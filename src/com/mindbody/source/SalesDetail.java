@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.csvreader.CsvReader;
 
-public class SalesDetail {
+public class SalesDetail extends BaseDetail{
 
 	private String clientID;
 	private String lastName;
@@ -204,20 +204,21 @@ public class SalesDetail {
 	
 	public static SalesDetail parse(CsvReader csvReader) throws IOException {
 		SalesDetail salesDetail = new SalesDetail();
-		salesDetail.clientID = csvReader.get(0);
-		salesDetail.lastName = csvReader.get(1);
-		salesDetail.firstName = csvReader.get(2);
-		salesDetail.email = csvReader.get(3);
-		salesDetail.pricingOptionName = csvReader.get(4);
-		salesDetail.pricingOptionID = Long.parseLong(csvReader.get(5));
-		salesDetail.serviceCategoryName = csvReader.get(6);
-		salesDetail.serviceCategoryID = Long.parseLong(csvReader.get(7));
-		salesDetail.revenueCategoryName = csvReader.get(8);
-		salesDetail.revenueCategoryID = Long.parseLong(csvReader.get(9));
-		salesDetail.saleDate = csvReader.get(10);
-		salesDetail.saleAmount = Double.parseDouble(csvReader.get(11));
-		salesDetail.saleSource = csvReader.get(12);
+		salesDetail.clientID = salesDetail.safeString(csvReader.get(0));
+		salesDetail.lastName = salesDetail.safeString(csvReader.get(1));
+		salesDetail.firstName = salesDetail.safeString(csvReader.get(2));
+		salesDetail.email = salesDetail.safeString(csvReader.get(3));
+		salesDetail.pricingOptionName = salesDetail.safeString(csvReader.get(4));
+		salesDetail.pricingOptionID = salesDetail.safeLong(csvReader.get(5));
+		salesDetail.serviceCategoryName = salesDetail.safeString(csvReader.get(6));
+		salesDetail.serviceCategoryID = salesDetail.safeLong(csvReader.get(7));
+		salesDetail.revenueCategoryName = salesDetail.safeString(csvReader.get(8));
+		salesDetail.revenueCategoryID = salesDetail.safeLong(csvReader.get(9));
+		salesDetail.saleDate = salesDetail.safeString(csvReader.get(10));
+		salesDetail.saleAmount = salesDetail.safeDouble(csvReader.get(11));
+		salesDetail.saleSource = salesDetail.safeString(csvReader.get(12));
 		return salesDetail;
 	}
 
+	
 }
